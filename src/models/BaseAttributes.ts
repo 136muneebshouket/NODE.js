@@ -1,10 +1,11 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from "sequelize";
 
 export const baseAttributes = {
   id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
+    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATE,

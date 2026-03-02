@@ -1,12 +1,13 @@
 import sequelize from '../config/database';
+import Posts, { initPostsModel } from './Posts';
 import User, { initUserModel } from './User';
 
 // Export models
-export { User };
-
+export { User, Posts };
 // Initialize all models
 export const initModels = (): void => {
   initUserModel();
+  initPostsModel();
   // Add other model initializations here as needed
 };
 
@@ -21,8 +22,7 @@ export const syncModels = async (force = false): Promise<void> => {
   try {
     initModels();
     defineAssociations();
-    await sequelize.sync({ force });
-    console.log(`Database synced${force ? ' (force)' : ''}.`);
+ 
   } catch (error) {
     console.error('Error syncing database:', error);
     throw error;

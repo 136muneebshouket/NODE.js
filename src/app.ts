@@ -7,12 +7,10 @@ import { notFoundHandler } from "./utils/error.handler";
 import { exceptionsMiddleware } from "./middlewares/exceptions.middleware";
 import { requestLogger } from "./middlewares";
 import { trimMiddleware } from "./middlewares/trim.middleware";
-
+import { Alter } from "./utils/alterTables";
 
 const createApp = (): Application => {
   const app = express();
-
-
 
   // Middleware
   app.use(cors());
@@ -33,7 +31,6 @@ const createApp = (): Application => {
   // Errors handler
   // @important: Should be the last `app.use`
   // ----------------------------------------
-  
 
   // API routes
   app.use("/api", routes);
@@ -42,6 +39,17 @@ const createApp = (): Application => {
   // Health check route (root level)
   app.get("/health", (_req: Request, res: Response) => {
     res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
+  });
+
+  app.get("/synctables", async (req, res) => {
+    try {
+      // await Alter();
+
+      res.json({ message: "Tables synced successfully" });
+    } catch (error) {
+      console.error("Error syncing tables:", error);
+      res.status(500).json({ error: error });
+    }
   });
 
   // 404 handler

@@ -1,0 +1,58 @@
+import {
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from "sequelize";
+import { Model } from "sequelize";
+import sequelize from "../config/database";
+import { baseAttributes, baseOptions } from "./BaseAttributes";
+
+interface TableAttributes {
+  id: CreationOptional<number>;
+  email: string;
+  createdAt: CreationOptional<Date>;
+  updatedAt: CreationOptional<Date>;
+  deletedAt: CreationOptional<Date>;
+}
+
+class Table
+  extends Model<InferAttributes<Table>, InferCreationAttributes<Table>>
+  implements TableAttributes
+{
+  declare id: CreationOptional<number>;
+  declare email: string;
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
+  declare readonly deletedAt: CreationOptional<Date>;
+
+  static initModel(): void {
+    Table.init(
+      {
+        ...baseAttributes,
+        email: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+          unique: true,
+          validate: {
+            isEmail: true,
+          },
+        },
+     
+      },
+      {
+        sequelize,
+        // remember tableName should be same name as in the migration file of this table
+        tableName: "tables",
+        ...baseOptions,
+      },
+    );
+  }
+}
+
+// Export model initialization function
+export const initTableModel = (): void => {
+  Table.initModel();
+};
+
+export default Table;
