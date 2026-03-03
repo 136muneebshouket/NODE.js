@@ -1,34 +1,33 @@
 import {
   DataTypes,
+  Sequelize,
   InferAttributes,
-    Sequelize,
   InferCreationAttributes,
   CreationOptional,
 } from "sequelize";
 import { Model } from "sequelize";
-import sequelize from "../config/database";
+
 import { baseAttributes, baseOptions } from "./BaseAttributes";
 
 interface TableAttributes {
   id: CreationOptional<number>;
-  email: string;
+  token: string;
   createdAt: CreationOptional<Date>;
   updatedAt: CreationOptional<Date>;
   deletedAt: CreationOptional<Date>;
 }
 
-class Table
-  extends Model<InferAttributes<Table>, InferCreationAttributes<Table>>
+class Sessions
+  extends Model<InferAttributes<Sessions>, InferCreationAttributes<Sessions>>
   implements TableAttributes
 {
   declare id: CreationOptional<number>;
-  declare email: string;
+  declare token: string;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: CreationOptional<Date>;
-  
 
-   /**
+  /**
    * Helper method for defining associations.
    * This method is not a part of Sequelize lifecycle.
    * The `models/index` file will call this method automatically.
@@ -37,32 +36,27 @@ class Table
     // define association here
     // Example: User.hasMany(models.Posts, { foreignKey: 'userId' });
   }
- 
 }
 
-const initTable = (sequelize: Sequelize): typeof Table => {
-    Table.init(
-      {
-        ...baseAttributes,
-        email: {
-          type: DataTypes.STRING(255),
-          allowNull: false,
-          unique: true,
-          validate: {
-            isEmail: true,
-          },
-        },
-     
+const initSessions = (sequelize: Sequelize): typeof Sessions => {
+  Sessions.init(
+    {
+      ...baseAttributes,
+      token: {
+        type: DataTypes.STRING(255),
+        allowNull: false,
+       
       },
-      {
-        sequelize,
-        // remember tableName should be same name as in the migration file of this table
-        tableName: "tables",
-        ...baseOptions,
-      },
-    );
-     return Table;
-  }
+    },
+    {
+      sequelize,
+      // remember tableName should be same name as in the migration file of this Sessions
+      tableName: "sessions",
+      ...baseOptions,
+    },
+  );
+  return Sessions;
+};
 
-export { Table, initTable };
-export default initTable;
+export { Sessions, initSessions };
+export default initSessions;

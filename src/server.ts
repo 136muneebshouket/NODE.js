@@ -1,7 +1,8 @@
 import "dotenv/config";
 import createApp from "./app";
-import _sequelize, { testConnection } from "./config/database";
+// import _sequelize, { testConnection } from "./config/database";
 import redis from "./services/redis.service";
+import { testConnection } from "./config/database";
 
 const PORT = process.env.PORT || 8000;
 
@@ -18,11 +19,11 @@ const startServer = async (): Promise<void> => {
 
     // // Sync database (use with caution in production)
     // // In production, use migrations instead
-    if (process.env.NODE_ENV === "development") {
-      const { syncModels } = await import("./models");
-      await syncModels(false);
-      console.log("✅ Database synced successfully.");
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   const { syncModels } = await import("./models");
+    //   await syncModels(false);
+    //   console.log("✅ Database synced successfully.");
+    // }
 
     const app = createApp();
 

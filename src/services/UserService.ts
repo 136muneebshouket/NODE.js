@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { BaseService } from './BaseService';
-import User from '../models/User';
+import { User } from '../models/User';
 import { CreateUserDto, UpdateUserDto, UserResponseDto } from '../types/user.dto';
 
 export class UserService extends BaseService<User> {
